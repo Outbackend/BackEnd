@@ -10,7 +10,6 @@ import outBackend.cloudProject.converter.MemberConverter;
 import outBackend.cloudProject.domain.Member;
 import outBackend.cloudProject.security.TokenDto;
 import outBackend.cloudProject.service.memberService.AuthService;
-import outBackend.cloudProject.service.memberService.MemberCommandService;
 import outBackend.cloudProject.web.dto.MemberRequestDTO;
 import outBackend.cloudProject.web.dto.MemberResponseDTO;
 
@@ -19,7 +18,6 @@ import outBackend.cloudProject.web.dto.MemberResponseDTO;
 @RequestMapping("/user")
 public class MemberRestController {
 
-    private final MemberCommandService memberCommandService;
     private final AuthService authService;
 
     @PostMapping("/signup")
