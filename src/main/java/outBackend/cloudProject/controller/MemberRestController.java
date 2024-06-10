@@ -1,4 +1,4 @@
-package outBackend.cloudProject.web.controller;
+package outBackend.cloudProject.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,8 +10,8 @@ import outBackend.cloudProject.converter.MemberConverter;
 import outBackend.cloudProject.domain.Member;
 import outBackend.cloudProject.security.TokenDto;
 import outBackend.cloudProject.service.memberService.AuthService;
-import outBackend.cloudProject.web.dto.MemberRequestDTO;
-import outBackend.cloudProject.web.dto.MemberResponseDTO;
+import outBackend.cloudProject.dto.MemberRequestDTO;
+import outBackend.cloudProject.dto.MemberResponseDTO;
 
 @RestController
 @RequiredArgsConstructor

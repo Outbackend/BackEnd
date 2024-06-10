@@ -1,4 +1,4 @@
-package outBackend.cloudProject.web.dto;
+package outBackend.cloudProject.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class TokenRequestDTO {
+public class TokenResponseDTO {
     private String accessToken;
     private String refreshToken;
 }
