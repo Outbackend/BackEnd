@@ -11,6 +11,8 @@ public class MemberSkillTagConverter {
     public static List<MemberSkillTag> toMemberSkillTagList(List<SkillTag> skillTagList){
 
         return skillTagList.stream()
-                .map(skillTag -> MemberSkillTag.builder().build()).collect(Collectors.toList());
+                .map(skillTag -> MemberSkillTag.builder()
+                        .skillTag(skillTag)
+                        .build()).collect(Collectors.toList());
     }
 }

@@ -52,7 +52,10 @@ public class AuthService {
 
         List<MemberSkillTag> memberSkillTagList = MemberSkillTagConverter.toMemberSkillTagList(skillTagList);
 
-        memberSkillTagList.forEach(memberSkillTag -> {memberSkillTag.setMember(member);});
+        memberSkillTagList.forEach(memberSkillTag -> {
+            memberSkillTag.setMember(member);
+            memberSkillTag.setSkillTag(memberSkillTag.getSkillTag());
+        });
 
         return memberRepository.save(member);
     }

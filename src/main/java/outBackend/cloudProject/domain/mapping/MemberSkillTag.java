@@ -5,6 +5,8 @@ import lombok.*;
 import outBackend.cloudProject.domain.Member;
 import outBackend.cloudProject.domain.SkillTag;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Builder
@@ -31,5 +33,14 @@ public class MemberSkillTag {
         }
         this.member = member;
         member.getMemberSkillTagList().add(this);
+    }
+
+    public void setSkillTag(SkillTag skillTag){
+
+        if(this.skillTag != null){
+            this.skillTag.getMemberSkillTagList().remove(this);
+        }
+        this.skillTag = skillTag;
+        skillTag.getMemberSkillTagList().add(this);
     }
 }
