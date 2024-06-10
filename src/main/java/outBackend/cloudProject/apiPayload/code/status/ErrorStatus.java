@@ -13,7 +13,9 @@ public enum ErrorStatus implements ErrorCode {
     _INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "500", "서버 에러"),
     _BAD_REQUEST(HttpStatus.BAD_REQUEST, "400", "잘못된 요청입니다"),
     _UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "401", "인증이 필요합니다."),
-    _FORBIDDEN(HttpStatus.FORBIDDEN, "403", "금지된 요청입니다.");
+    _FORBIDDEN(HttpStatus.FORBIDDEN, "403", "금지된 요청입니다."),
+
+    _SKILLTAG_NOT_FOUND(HttpStatus.BAD_REQUEST, "400", "존재하지 않는 스킬태그입니다.");
 
     private final HttpStatus httpStatus;
     private final String code;

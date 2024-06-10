@@ -1,7 +1,9 @@
 package outBackend.cloudProject.apiPayload;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import outBackend.cloudProject.apiPayload.code.status.SuccessStatus;
 
 
@@ -9,7 +11,9 @@ import outBackend.cloudProject.apiPayload.code.status.SuccessStatus;
 //  RestController에서 ApiResponse 형식을 반환
 //  code와 message 부분은 직접 입력하지 않는다. apiPayload\code\status 폴더의 enum class 안에 상수 값을 정의하고 가져와 사용한다.
 //  result에는 controller에서 반환 시 dto를 넣어준다.
+@Getter
 @AllArgsConstructor
+@JsonPropertyOrder({"isSuccess", "code", "message", "result"})
 public class ApiResponse<T> {
 
     private final Boolean isSuccess;
