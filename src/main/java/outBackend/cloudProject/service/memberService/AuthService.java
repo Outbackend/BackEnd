@@ -19,9 +19,9 @@ import outBackend.cloudProject.repository.RefreshTokenRepository;
 import outBackend.cloudProject.repository.SkillTagRepository;
 import outBackend.cloudProject.security.RefreshToken;
 import outBackend.cloudProject.security.TokenProvider;
-import outBackend.cloudProject.web.dto.MemberRequestDTO;
+import outBackend.cloudProject.dto.MemberRequestDTO;
 import outBackend.cloudProject.security.TokenDto;
-import outBackend.cloudProject.web.dto.TokenRequestDTO;
+import outBackend.cloudProject.dto.TokenRequestDTO;
 
 import java.util.List;
 import java.util.stream.Collectors;

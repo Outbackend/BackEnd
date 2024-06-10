@@ -1,4 +1,4 @@
-package outBackend.cloudProject.web.dto;
+package outBackend.cloudProject.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

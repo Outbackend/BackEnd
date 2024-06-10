@@ -1,19 +1,14 @@
 package outBackend.cloudProject.converter;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import outBackend.cloudProject.domain.Member;
-import outBackend.cloudProject.domain.SkillTag;
 import outBackend.cloudProject.domain.enums.Authority;
-import outBackend.cloudProject.domain.mapping.MemberSkillTag;
 import outBackend.cloudProject.security.TokenDto;
-import outBackend.cloudProject.web.dto.MemberRequestDTO;
-import outBackend.cloudProject.web.dto.MemberResponseDTO;
+import outBackend.cloudProject.dto.MemberRequestDTO;
+import outBackend.cloudProject.dto.MemberResponseDTO;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class MemberConverter {
 
