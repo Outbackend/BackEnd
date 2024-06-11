@@ -3,10 +3,13 @@ package outBackend.cloudProject.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import outBackend.cloudProject.domain.Article;
 import outBackend.cloudProject.dto.AddArticleRequest;
 import outBackend.cloudProject.dto.ArticleResponse;
+import outBackend.cloudProject.dto.UpdateArticleRequest;
+import outBackend.cloudProject.repository.ArticleRepository;
 import outBackend.cloudProject.service.ArticleService.ArticleService;
 
 import java.util.List;
@@ -51,4 +54,11 @@ public class ArticleApiController {
                 .build();
     }
 
+    @PutMapping("/api/articles/{id}")
+    public ResponseEntity<Article> updateArticle(@PathVariable(name = "id") long id, @RequestBody UpdateArticleRequest request){
+        Article updatedArticle = articleService.update(id,request);
+
+        return ResponseEntity.ok()
+                .body(updatedArticle);
+    }
 }

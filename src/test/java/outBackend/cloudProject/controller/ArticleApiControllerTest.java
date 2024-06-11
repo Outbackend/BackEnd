@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import outBackend.cloudProject.domain.Article;
 import outBackend.cloudProject.dto.AddArticleRequest;
+import outBackend.cloudProject.dto.UpdateArticleRequest;
 import outBackend.cloudProject.repository.ArticleRepository;
 
 import java.util.List;
@@ -48,7 +49,7 @@ class ArticleApiControllerTest {
         articleRepository.deleteAll();
     }
 
-    @DisplayName("addArticle: 아티클 추가에 성공")
+    @DisplayName("addArticle: 아티클 추가 성공")
     @Test
     public void addArticle() throws Exception {
         final String url = "/api/articles";
@@ -101,7 +102,7 @@ class ArticleApiControllerTest {
                 .andExpect(jsonPath("$[0].title").value(title));
     }
 
-    @DisplayName("findArticle: 아티클(id 검색) 글 조회에 성공")
+    @DisplayName("findArticle: 아티클(id 검색) 글 조회 성공")
     @Test
     public void findArticle() throws Exception{
         final String url = "/api/articles/{id}";
@@ -142,6 +143,34 @@ class ArticleApiControllerTest {
         List<Article> articles = articleRepository.findAll();
 
         assertThat(articles).isEmpty();
+    }
 
+    @DisplayName("updateArticle: 아티클 글 수정 성공")
+    @Test
+    public void updateArticle() throws Exception{
+        final String url = "/api/articles/{id}";
+        final String title = "title";
+        final String content = "content";
+
+        Article savedArticle = articleRepository.save(Article.builder()
+                .title(title)
+                .content(content)
+                .build());
+
+        final String newTitle = "new title";
+        final String newContent = "new content";
+
+        UpdateArticleRequest request = new UpdateArticleRequest(newTitle, newContent,1,0,1,0,1,0);
+
+        ResultActions resultActions = mockMvc.perform(put(url,savedArticle.getId())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(request)));
+
+        resultActions.andExpect(status().isOk());
+
+        Article article = articleRepository.findById(savedArticle.getId()).get();
+
+        assertThat(article.getTitle()).isEqualTo(newTitle);
+        assertThat(article.getContent()).isEqualTo(newContent);
     }
 }
