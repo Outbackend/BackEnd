@@ -48,7 +48,7 @@ class ArticleApiControllerTest {
         articleRepository.deleteAll();
     }
 
-    @DisplayName("addArticle 성공")
+    @DisplayName("addArticle: 아티클 추가에 성공")
     @Test
     public void addArticle() throws Exception {
         final String url = "/api/articles";
@@ -74,7 +74,7 @@ class ArticleApiControllerTest {
         assertThat(articles.get(0).getContent()).isEqualTo(content);
     }
 
-    @DisplayName("findAllArticles 성공")
+    @DisplayName("findAllArticles: 아티클 목록 조회 성공")
     @Test
     public void findAllArticles() throws Exception {
         final String url = "/api/articles";
@@ -99,5 +99,49 @@ class ArticleApiControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].content").value(content))
                 .andExpect(jsonPath("$[0].title").value(title));
+    }
+
+    @DisplayName("findArticle: 아티클(id 검색) 글 조회에 성공")
+    @Test
+    public void findArticle() throws Exception{
+        final String url = "/api/articles/{id}";
+
+        final String title = "title";
+        final String content = "content";
+
+        Article savedArticle = articleRepository.save(Article.builder()
+                .title(title)
+                .content(content)
+                .build());
+
+
+        final ResultActions resultActions = mockMvc.perform(get(url,savedArticle.getId()));
+
+        resultActions
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content").value(content))
+                .andExpect(jsonPath("$.title").value(title));
+    }
+
+    @DisplayName("deleteArticle: 아티클 삭제 성공")
+    @Test
+    public void deleteArticle() throws Exception
+    {
+        final String url = "/api/articles/{id}";
+        final String title = "title";
+        final String content = "content";
+
+        Article savedArticle = articleRepository.save(Article.builder()
+                .title(title)
+                .content(content)
+                .build());
+
+        mockMvc.perform(delete(url,savedArticle.getId()))
+                .andExpect(status().isOk());
+
+        List<Article> articles = articleRepository.findAll();
+
+        assertThat(articles).isEmpty();
+
     }
 }

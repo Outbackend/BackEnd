@@ -3,10 +3,7 @@ package outBackend.cloudProject.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import outBackend.cloudProject.domain.Article;
 import outBackend.cloudProject.dto.AddArticleRequest;
 import outBackend.cloudProject.dto.ArticleResponse;
@@ -36,6 +33,22 @@ public class ArticleApiController {
 
         return ResponseEntity.ok()
                 .body(articles);
+    }
+
+    @GetMapping("/api/articles/{id}")
+    public ResponseEntity<ArticleResponse> findArticle(@PathVariable(name = "id") long id){
+        Article article = articleService.findById(id);
+
+        return ResponseEntity.ok()
+                .body(new ArticleResponse(article));
+    }
+
+    @DeleteMapping("/api/articles/{id}")
+    public ResponseEntity<Void> deleteArticle(@PathVariable(name = "id") long id){
+        articleService.delete(id);
+
+        return ResponseEntity.ok()
+                .build();
     }
 
 }
