@@ -12,12 +12,12 @@ import outBackend.cloudProject.domain.Article;
 public class AddArticleRequest {
     private String title;
     private String content;
-    private int front_recruit_count;
-    private int front_current_count;
-    private  int back_recruit_count;
-    private  int back_current_count;
-    private int design_recruit_count;
-    private int design_current_count;
+    private Integer front_recruit_count;
+    private Integer front_current_count;
+    private Integer back_recruit_count;
+    private Integer back_current_count;
+    private Integer design_recruit_count;
+    private Integer design_current_count;
 
     public Article toEntity(){
         return Article.builder()
