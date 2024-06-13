@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Article{
+public class Project {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,8 +41,8 @@ public class Article{
     private Integer design_current_count;
 
     @Builder
-    public Article(Long id, String title, String content, int front_recruit_count, int front_current_count
-            , int back_recruit_count, int back_current_count, int design_recruit_count, int design_current_count) {
+    public Project(Long id, String title, String content, Integer front_recruit_count, Integer front_current_count
+            , Integer back_recruit_count, Integer back_current_count, Integer design_recruit_count, Integer design_current_count) {
         this.id = id;
         this.title = title;
         this.content = content;

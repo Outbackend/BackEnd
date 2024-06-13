@@ -1,15 +1,14 @@
 package outBackend.cloudProject.dto;
 
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import outBackend.cloudProject.domain.Article;
+import outBackend.cloudProject.domain.Project;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class AddArticleRequest {
+public class AddProjectRequest {
     private String title;
     private String content;
     private Integer front_recruit_count;
@@ -19,8 +18,8 @@ public class AddArticleRequest {
     private Integer design_recruit_count;
     private Integer design_current_count;
 
-    public Article toEntity(){
-        return Article.builder()
+    public Project toEntity(){
+        return Project.builder()
                 .title(title)
                 .content(content)
                 .front_recruit_count(front_recruit_count)

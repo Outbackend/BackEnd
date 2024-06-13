@@ -9,26 +9,24 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MockMvcBuilder;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import outBackend.cloudProject.domain.Article;
-import outBackend.cloudProject.dto.AddArticleRequest;
-import outBackend.cloudProject.dto.UpdateArticleRequest;
-import outBackend.cloudProject.repository.ArticleRepository;
+import outBackend.cloudProject.domain.Project;
+import outBackend.cloudProject.dto.AddProjectRequest;
+import outBackend.cloudProject.dto.UpdateProjectRequest;
+import outBackend.cloudProject.repository.ProjectRepository;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class ArticleApiControllerTest {
+class ProjectApiControllerTest {
 
     @Autowired
     protected MockMvc mockMvc;
@@ -40,22 +38,22 @@ class ArticleApiControllerTest {
     private WebApplicationContext context;
 
     @Autowired
-    ArticleRepository articleRepository;
+    ProjectRepository projectRepository;
 
     @BeforeEach
     public void mockMvcSetup(){
         this.mockMvc = MockMvcBuilders.webAppContextSetup(context)
                 .build();
-        articleRepository.deleteAll();
+        projectRepository.deleteAll();
     }
 
-    @DisplayName("addArticle: 아티클 추가 성공")
+    @DisplayName("addProject: 아티클 추가 성공")
     @Test
-    public void addArticle() throws Exception {
-        final String url = "/api/articles";
+    public void addProject() throws Exception {
+        final String url = "/api/projects";
         final String title = "title";
         final String content = "content";
-        final AddArticleRequest userRequest = new AddArticleRequest(title,content,
+        final AddProjectRequest userRequest = new AddProjectRequest(title,content,
                 3,1,1,0,0,0);
 
         //객체 Json으로 직렬화
@@ -68,21 +66,21 @@ class ArticleApiControllerTest {
 
         resultActions.andExpect(status().isCreated());
 
-        List<Article> articles = articleRepository.findAll();
+        List<Project> projects = projectRepository.findAll();
 
-        assertThat(articles.size()).isEqualTo(1);
-        assertThat(articles.get(0).getTitle()).isEqualTo(title);
-        assertThat(articles.get(0).getContent()).isEqualTo(content);
+        assertThat(projects.size()).isEqualTo(1);
+        assertThat(projects.get(0).getTitle()).isEqualTo(title);
+        assertThat(projects.get(0).getContent()).isEqualTo(content);
     }
 
-    @DisplayName("findAllArticles: 아티클 목록 조회 성공")
+    @DisplayName("findAllProjects: 아티클 목록 조회 성공")
     @Test
-    public void findAllArticles() throws Exception {
-        final String url = "/api/articles";
+    public void findAllProjects() throws Exception {
+        final String url = "/api/projects";
         final String title = "title";
         final String content = "content";
 
-        articleRepository.save(Article.builder()
+        projectRepository.save(Project.builder()
                 .title(title)
                 .content(content)
                 .front_recruit_count(3)
@@ -102,21 +100,27 @@ class ArticleApiControllerTest {
                 .andExpect(jsonPath("$[0].title").value(title));
     }
 
-    @DisplayName("findArticle: 아티클(id 검색) 글 조회 성공")
+    @DisplayName("findProject: 아티클(id 검색) 글 조회 성공")
     @Test
-    public void findArticle() throws Exception{
-        final String url = "/api/articles/{id}";
+    public void findProject() throws Exception{
+        final String url = "/api/projects/{id}";
 
         final String title = "title";
         final String content = "content";
 
-        Article savedArticle = articleRepository.save(Article.builder()
+        Project savedProject = projectRepository.save(Project.builder()
                 .title(title)
                 .content(content)
+                .front_recruit_count(3)
+                .front_current_count(1)
+                .back_recruit_count(1)
+                .back_current_count(0)
+                .design_recruit_count(1)
+                .design_current_count(0)
                 .build());
 
 
-        final ResultActions resultActions = mockMvc.perform(get(url,savedArticle.getId()));
+        final ResultActions resultActions = mockMvc.perform(get(url, savedProject.getId()));
 
         resultActions
                 .andExpect(status().isOk())
@@ -124,35 +128,35 @@ class ArticleApiControllerTest {
                 .andExpect(jsonPath("$.title").value(title));
     }
 
-    @DisplayName("deleteArticle: 아티클 삭제 성공")
+    @DisplayName("deleteProject: 아티클 삭제 성공")
     @Test
-    public void deleteArticle() throws Exception
+    public void deleteProject() throws Exception
     {
-        final String url = "/api/articles/{id}";
+        final String url = "/api/projects/{id}";
         final String title = "title";
         final String content = "content";
 
-        Article savedArticle = articleRepository.save(Article.builder()
+        Project savedProject = projectRepository.save(Project.builder()
                 .title(title)
                 .content(content)
                 .build());
 
-        mockMvc.perform(delete(url,savedArticle.getId()))
+        mockMvc.perform(delete(url, savedProject.getId()))
                 .andExpect(status().isOk());
 
-        List<Article> articles = articleRepository.findAll();
+        List<Project> projects = projectRepository.findAll();
 
-        assertThat(articles).isEmpty();
+        assertThat(projects).isEmpty();
     }
 
-    @DisplayName("updateArticle: 아티클 글 수정 성공")
+    @DisplayName("updateProject: 아티클 글 수정 성공")
     @Test
-    public void updateArticle() throws Exception{
-        final String url = "/api/articles/{id}";
+    public void updateProject() throws Exception{
+        final String url = "/api/projects/{id}";
         final String title = "title";
         final String content = "content";
 
-        Article savedArticle = articleRepository.save(Article.builder()
+        Project savedProject = projectRepository.save(Project.builder()
                 .title(title)
                 .content(content)
                 .build());
@@ -160,17 +164,17 @@ class ArticleApiControllerTest {
         final String newTitle = "new title";
         final String newContent = "new content";
 
-        UpdateArticleRequest request = new UpdateArticleRequest(newTitle, newContent,1,0,1,0,1,0);
+        UpdateProjectRequest request = new UpdateProjectRequest(newTitle, newContent,1,0,1,0,1,0);
 
-        ResultActions resultActions = mockMvc.perform(put(url,savedArticle.getId())
+        ResultActions resultActions = mockMvc.perform(put(url, savedProject.getId())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(request)));
 
         resultActions.andExpect(status().isOk());
 
-        Article article = articleRepository.findById(savedArticle.getId()).get();
+        Project project = projectRepository.findById(savedProject.getId()).get();
 
-        assertThat(article.getTitle()).isEqualTo(newTitle);
-        assertThat(article.getContent()).isEqualTo(newContent);
+        assertThat(project.getTitle()).isEqualTo(newTitle);
+        assertThat(project.getContent()).isEqualTo(newContent);
     }
 }

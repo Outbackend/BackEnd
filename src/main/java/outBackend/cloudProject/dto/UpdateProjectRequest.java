@@ -3,12 +3,11 @@ package outBackend.cloudProject.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class UpdateArticleRequest {
+public class UpdateProjectRequest {
     private String title;
     private String content;
     private Integer front_recruit_count;
