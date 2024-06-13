@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/outbackend
     username: 'root'
-    password: 'anthony6797'
+    password: '0000'
     driver-class-name: com.mysql.cj.jdbc.Driver
   sql:
     init:
