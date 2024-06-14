@@ -26,6 +26,11 @@ public class Member {
     private String email;
     private String password;
 
+    //  한 줄 소개글
+    private String intro;
+    //  설명
+    private String about;
+
     @Enumerated(EnumType.STRING)
     private Authority authority;
 

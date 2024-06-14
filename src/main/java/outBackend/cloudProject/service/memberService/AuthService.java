@@ -20,7 +20,7 @@ import outBackend.cloudProject.repository.SkillTagRepository;
 import outBackend.cloudProject.security.RefreshToken;
 import outBackend.cloudProject.security.TokenProvider;
 import outBackend.cloudProject.dto.MemberRequestDTO;
-import outBackend.cloudProject.security.TokenDto;
+import outBackend.cloudProject.dto.TokenDto;
 import outBackend.cloudProject.dto.TokenRequestDTO;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package outBackend.cloudProject.security;
+package outBackend.cloudProject.dto;
 
 import lombok.Builder;
 import lombok.Getter;

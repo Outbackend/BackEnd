@@ -4,7 +4,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import outBackend.cloudProject.domain.Member;
 import outBackend.cloudProject.domain.enums.Authority;
-import outBackend.cloudProject.security.TokenDto;
+import outBackend.cloudProject.dto.TokenDto;
 import outBackend.cloudProject.dto.MemberRequestDTO;
 import outBackend.cloudProject.dto.MemberResponseDTO;
 
