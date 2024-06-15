@@ -16,29 +16,14 @@ public class Project {
     @Column(name = "id", updatable = false)
     private Long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "body")
+    @Column(name = "content")
     private String content;
 
-    @Column(name = "front_recruit_count")
-    private Integer front_recruit_count;
+    @Column(name = "deadline")
 
-    @Column(name = "front_current_count")
-    private Integer front_current_count;
-
-    @Column(name = "back_recruit_count")
-    private Integer back_recruit_count;
-
-    @Column(name = "back_current_count")
-    private Integer back_current_count;
-
-    @Column(name = "design_recruit_count")
-    private Integer design_recruit_count;
-
-    @Column(name = "design_current_count")
-    private Integer design_current_count;
 
     @Builder
     public Project(Long id, String title, String content, Integer front_recruit_count, Integer front_current_count
