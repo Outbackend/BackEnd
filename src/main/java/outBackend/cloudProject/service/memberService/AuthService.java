@@ -24,6 +24,7 @@ import outBackend.cloudProject.dto.TokenDto;
 import outBackend.cloudProject.dto.TokenRequestDTO;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -112,5 +113,14 @@ public class AuthService {
 
         // 토큰 발급
         return tokenDto;
+    }
+
+    @Transactional
+    public void deleteUser(String accessToken){
+
+        Authentication authentication = tokenProvider.getAuthentication(accessToken);
+        System.out.println("name: " + authentication.getName());
+        Optional<Member> member = memberRepository.findByEmail(authentication.getName());
+        memberRepository.delete(member.get());
     }
 }

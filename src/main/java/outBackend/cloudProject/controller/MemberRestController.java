@@ -1,6 +1,7 @@
 package outBackend.cloudProject.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import outBackend.cloudProject.apiPayload.ApiResponse;
 import outBackend.cloudProject.converter.MemberConverter;
@@ -9,6 +10,7 @@ import outBackend.cloudProject.domain.Member;
 import outBackend.cloudProject.domain.SkillTag;
 import outBackend.cloudProject.dto.TokenResponseDTO;
 import outBackend.cloudProject.dto.TokenDto;
+import outBackend.cloudProject.security.TokenProvider;
 import outBackend.cloudProject.service.memberService.AuthService;
 import outBackend.cloudProject.dto.MemberRequestDTO;
 import outBackend.cloudProject.dto.MemberResponseDTO;
@@ -56,6 +58,9 @@ public class MemberRestController {
     }
 
     @DeleteMapping("/")
-    public void deleteMember(@RequestHeader("accessToken") String accessToken){
+    public ApiResponse<String> deleteMember(@RequestHeader("accessToken") String accessToken){
+
+        authService.deleteUser(accessToken);
+        return ApiResponse.onSuccess("Successfully deleted member");
     }
 }
