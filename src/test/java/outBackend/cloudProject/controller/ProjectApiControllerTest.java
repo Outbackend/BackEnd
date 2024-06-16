@@ -18,7 +18,6 @@ import outBackend.cloudProject.dto.UpdateProjectRequest;
 import outBackend.cloudProject.repository.ProjectRepository;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -55,6 +54,7 @@ class ProjectApiControllerTest {
         final String url = "/api/projects";
         final String title = "title";
         final String content = "content";
+
         final AddProjectRequest userRequest = new AddProjectRequest(title,content,
                 LocalDate.of(2024,06,16));
 

@@ -1,17 +1,17 @@
 package outBackend.cloudProject.domain;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import outBackend.cloudProject.domain.mapping.ProjectPosition;
 
 import java.time.LocalDate;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Project {
 
     @Id
@@ -28,19 +28,21 @@ public class Project {
     @Column(name = "deadline")
     private LocalDate deadline;
 
+//    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private List<ProjectPosition> projectPositionList = new ArrayList<>();
 
     @Builder
-    public Project(Long id, String title, String content, LocalDate deadline) {
-        this.id = id;
+    public Project(String title,String content,LocalDate deadline){
         this.title = title;
         this.content = content;
         this.deadline = deadline;
-
+//        this.projectPositionList = projectPositionList;
     }
+
     public void update(String title, String content, LocalDate deadline){
         this.title = title;
         this.content = content;
-        this.deadline = deadline;
+        this.deadline  = deadline;
     }
 
 }
