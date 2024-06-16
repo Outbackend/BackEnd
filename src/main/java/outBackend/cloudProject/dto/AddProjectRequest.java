@@ -3,7 +3,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import outBackend.cloudProject.domain.Project;
-import outBackend.cloudProject.domain.mapping.ProjectPosition;
+import outBackend.cloudProject.domain.ProjectPosition;
+
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -16,14 +17,14 @@ public class AddProjectRequest {
     private String title;
     private String content;
     private LocalDate deadline;
-//    private List<ProjectPosition> projectPositionList;
+    private List<ProjectPosition> projectPositionList;
 
     public Project toEntity(){
         return Project.builder()
                 .title(title)
                 .content(content)
                 .deadline(deadline)
-//                .projectPositionList(projectPositionList)
+                .projectPositionList(projectPositionList)
                 .build();
     }
 
