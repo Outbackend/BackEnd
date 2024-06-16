@@ -34,8 +34,7 @@ public class ProjectService {
         Project project = projectRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("not found: " + id));
 
-        project.update(request.getTitle(),request.getContent(), request.getFront_recruit_count(), request.getFront_current_count()
-        , request.getBack_recruit_count(), request.getBack_current_count(), request.getDesign_recruit_count(), request.getDesign_current_count());
+        project.update(request.getTitle(),request.getContent(), request.getDeadline());
 
         return project;
     }

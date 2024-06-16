@@ -17,6 +17,8 @@ import outBackend.cloudProject.dto.AddProjectRequest;
 import outBackend.cloudProject.dto.UpdateProjectRequest;
 import outBackend.cloudProject.repository.ProjectRepository;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -54,7 +56,7 @@ class ProjectApiControllerTest {
         final String title = "title";
         final String content = "content";
         final AddProjectRequest userRequest = new AddProjectRequest(title,content,
-                3,1,1,0,0,0);
+                LocalDate.of(2024,06,16));
 
         //객체 Json으로 직렬화
         final String requestBody = objectMapper.writeValueAsString(userRequest);
@@ -83,12 +85,7 @@ class ProjectApiControllerTest {
         projectRepository.save(Project.builder()
                 .title(title)
                 .content(content)
-                .front_recruit_count(3)
-                .front_current_count(1)
-                .back_recruit_count(1)
-                .back_current_count(0)
-                .design_recruit_count(1)
-                .design_current_count(0)
+                .deadline(LocalDate.of(2024,06,16))
                 .build());
 
         final ResultActions resultActions = mockMvc.perform(get(url)
@@ -111,12 +108,7 @@ class ProjectApiControllerTest {
         Project savedProject = projectRepository.save(Project.builder()
                 .title(title)
                 .content(content)
-                .front_recruit_count(3)
-                .front_current_count(1)
-                .back_recruit_count(1)
-                .back_current_count(0)
-                .design_recruit_count(1)
-                .design_current_count(0)
+                .deadline(LocalDate.of(2024,06,16))
                 .build());
 
 
@@ -164,7 +156,7 @@ class ProjectApiControllerTest {
         final String newTitle = "new title";
         final String newContent = "new content";
 
-        UpdateProjectRequest request = new UpdateProjectRequest(newTitle, newContent,1,0,1,0,1,0);
+        UpdateProjectRequest request = new UpdateProjectRequest(newTitle, newContent,LocalDate.of(2024,06,16));
 
         ResultActions resultActions = mockMvc.perform(put(url, savedProject.getId())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
