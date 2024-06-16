@@ -4,6 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import outBackend.cloudProject.domain.SkillTag;
+
+import java.util.List;
+import java.util.Optional;
 
 public class MemberResponseDTO {
 
@@ -12,6 +16,7 @@ public class MemberResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class JoinResultDTO{
+        Long id;
         String nickName;
     }
 
@@ -22,5 +27,29 @@ public class MemberResponseDTO {
     public static class LoginResultDTO{
         private String accessToken;
         private String refreshToken;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UserPageDTO{
+        Long id;
+        String nickName;
+        String intro;
+        String about;
+        List<String> SkillTagList;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UpdateUserResultDTO{
+        String nickName;
+        String intro;
+        String about;
+
+        List<String> skillTagList;
     }
 }

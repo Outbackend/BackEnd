@@ -12,9 +12,10 @@ import java.util.List;
 
 @Entity
 @Getter
+@Setter
 @DynamicUpdate
 @DynamicInsert
-@Builder
+@Builder(toBuilder = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class Member {
@@ -22,14 +23,24 @@ public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(unique = true)
     private String nickName;
+
+    @Column(unique = true)
     private String email;
+
     private String password;
+
+    //  한 줄 소개글
+    private String intro;
+    //  설명
+    private String about;
 
     @Enumerated(EnumType.STRING)
     private Authority authority;
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "member")
     private List<MemberSkillTag> memberSkillTagList = new ArrayList<>();
 
 

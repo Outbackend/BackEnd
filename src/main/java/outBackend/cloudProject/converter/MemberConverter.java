@@ -4,11 +4,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import outBackend.cloudProject.domain.Member;
 import outBackend.cloudProject.domain.enums.Authority;
-import outBackend.cloudProject.security.TokenDto;
+import outBackend.cloudProject.dto.TokenDto;
 import outBackend.cloudProject.dto.MemberRequestDTO;
 import outBackend.cloudProject.dto.MemberResponseDTO;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class MemberConverter {
 
@@ -17,15 +19,32 @@ public class MemberConverter {
         return Member.builder()
                 .nickName(request.getNickName())
                 .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassWord()))
+                .password(passwordEncoder.encode(request.getPassword()))
                 .memberSkillTagList(new ArrayList<>())
                 .authority(Authority.ROLE_USER)
+                .build();
+    }
+
+    public static MemberResponseDTO.UserPageDTO toUserPageDTO(Member member){
+
+        List<String> skillTagList = member.getMemberSkillTagList().stream()
+                .map(memberSkillTag -> {
+                    return memberSkillTag.getSkillTag().getName();
+                }).collect(Collectors.toList());
+
+        return MemberResponseDTO.UserPageDTO.builder()
+                .id(member.getId())
+                .nickName(member.getNickName())
+                .intro(member.getIntro())
+                .about(member.getAbout())
+                .SkillTagList(skillTagList)
                 .build();
     }
 
     public static MemberResponseDTO.JoinResultDTO toJoinResultDTO(Member member){
 
         return MemberResponseDTO.JoinResultDTO.builder()
+                .id(member.getId())
                 .nickName(member.getNickName())
                 .build();
     }
@@ -39,6 +58,21 @@ public class MemberConverter {
     }
 
     public static UsernamePasswordAuthenticationToken toAuthentication(MemberRequestDTO.LoginDTO loginRequest){
-        return new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassWord());
+        return new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword());
+    }
+
+    public static MemberResponseDTO.UpdateUserResultDTO toUpdateUserResultDTO(Member member){
+
+        List<String> skillTagList = member.getMemberSkillTagList().stream()
+                .map(memberSkillTag -> {
+                    return memberSkillTag.getSkillTag().getName();
+                }).collect(Collectors.toList());
+
+        return MemberResponseDTO.UpdateUserResultDTO.builder()
+                .nickName(member.getNickName())
+                .intro(member.getIntro())
+                .about(member.getAbout())
+                .skillTagList(skillTagList)
+                .build();
     }
 }
