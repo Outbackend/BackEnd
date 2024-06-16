@@ -6,11 +6,16 @@ import outBackend.cloudProject.apiPayload.ApiResponse;
 import outBackend.cloudProject.converter.MemberConverter;
 import outBackend.cloudProject.converter.TokenConverter;
 import outBackend.cloudProject.domain.Member;
+import outBackend.cloudProject.domain.SkillTag;
 import outBackend.cloudProject.dto.TokenResponseDTO;
 import outBackend.cloudProject.dto.TokenDto;
 import outBackend.cloudProject.service.memberService.AuthService;
 import outBackend.cloudProject.dto.MemberRequestDTO;
 import outBackend.cloudProject.dto.MemberResponseDTO;
+import outBackend.cloudProject.service.memberService.MemberService;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,11 +23,15 @@ import outBackend.cloudProject.dto.MemberResponseDTO;
 public class MemberRestController {
 
     private final AuthService authService;
+    private final MemberService memberService;
 
-//    @GetMapping
-//    public ApiResponse<MemberResponseDTO.UserPageDTO> userPage(@RequestHeader("accessToken") String accessToken){
-//
-//    }
+    @GetMapping("/{userid}")
+    public ApiResponse<MemberResponseDTO.UserPageDTO> userPage(@PathVariable Long userid){
+
+        Member member = memberService.userInfo(userid);
+
+        return ApiResponse.onSuccess(MemberConverter.toUserPageDTO(member));
+    }
 
     @PostMapping("/signup")
     public ApiResponse<MemberResponseDTO.JoinResultDTO> join(@RequestBody MemberRequestDTO.JoinDTO request){
@@ -44,5 +53,9 @@ public class MemberRestController {
 
         TokenDto tokenDto = authService.reissue(TokenConverter.toTokenRequest(accessToken, refreshToken));
         return ApiResponse.onSuccess(TokenConverter.toTokenResponse(accessToken, refreshToken));
+    }
+
+    @DeleteMapping("/")
+    public void deleteMember(@RequestHeader("accessToken") String accessToken){
     }
 }

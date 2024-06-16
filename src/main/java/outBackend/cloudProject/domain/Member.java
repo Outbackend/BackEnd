@@ -22,8 +22,13 @@ public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(unique = true)
     private String nickName;
+
+    @Column(unique = true)
     private String email;
+
     private String password;
 
     //  한 줄 소개글

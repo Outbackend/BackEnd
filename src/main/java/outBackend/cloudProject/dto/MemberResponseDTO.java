@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import outBackend.cloudProject.domain.mapping.MemberSkillTag;
+import outBackend.cloudProject.domain.SkillTag;
 
 import java.util.List;
 
@@ -32,9 +32,10 @@ public class MemberResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class UserPageDTO{
+        Long id;
         String nickName;
-        List<MemberSkillTag> memberSkillTagList;
         String intro;
         String about;
+        List<String> SkillTagList;
     }
 }
