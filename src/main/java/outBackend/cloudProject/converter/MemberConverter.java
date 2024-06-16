@@ -19,7 +19,7 @@ public class MemberConverter {
         return Member.builder()
                 .nickName(request.getNickName())
                 .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassWord()))
+                .password(passwordEncoder.encode(request.getPassword()))
                 .memberSkillTagList(new ArrayList<>())
                 .authority(Authority.ROLE_USER)
                 .build();
@@ -44,6 +44,7 @@ public class MemberConverter {
     public static MemberResponseDTO.JoinResultDTO toJoinResultDTO(Member member){
 
         return MemberResponseDTO.JoinResultDTO.builder()
+                .id(member.getId())
                 .nickName(member.getNickName())
                 .build();
     }
@@ -57,6 +58,21 @@ public class MemberConverter {
     }
 
     public static UsernamePasswordAuthenticationToken toAuthentication(MemberRequestDTO.LoginDTO loginRequest){
-        return new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassWord());
+        return new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword());
+    }
+
+    public static MemberResponseDTO.UpdateUserResultDTO toUpdateUserResultDTO(Member member){
+
+        List<String> skillTagList = member.getMemberSkillTagList().stream()
+                .map(memberSkillTag -> {
+                    return memberSkillTag.getSkillTag().getName();
+                }).collect(Collectors.toList());
+
+        return MemberResponseDTO.UpdateUserResultDTO.builder()
+                .nickName(member.getNickName())
+                .intro(member.getIntro())
+                .about(member.getAbout())
+                .skillTagList(skillTagList)
+                .build();
     }
 }

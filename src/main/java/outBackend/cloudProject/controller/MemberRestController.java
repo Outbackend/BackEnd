@@ -63,4 +63,12 @@ public class MemberRestController {
         authService.deleteUser(accessToken);
         return ApiResponse.onSuccess("Successfully deleted member");
     }
+
+    @PatchMapping("/")
+    public ApiResponse<MemberResponseDTO.UpdateUserResultDTO> updateMember(@RequestHeader("accessToken") String accessToken,
+                                      @RequestBody MemberRequestDTO.updateUserDTO request){
+
+        Member member = authService.updateUser(accessToken, request);
+        return ApiResponse.onSuccess(MemberConverter.toUpdateUserResultDTO(member));
+    }
 }

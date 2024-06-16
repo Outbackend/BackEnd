@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import outBackend.cloudProject.domain.SkillTag;
 
 import java.util.List;
+import java.util.Optional;
 
 public class MemberResponseDTO {
 
@@ -15,6 +16,7 @@ public class MemberResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class JoinResultDTO{
+        Long id;
         String nickName;
     }
 
@@ -37,5 +39,17 @@ public class MemberResponseDTO {
         String intro;
         String about;
         List<String> SkillTagList;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UpdateUserResultDTO{
+        String nickName;
+        String intro;
+        String about;
+
+        List<String> skillTagList;
     }
 }

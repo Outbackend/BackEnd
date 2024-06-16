@@ -15,6 +15,7 @@ import outBackend.cloudProject.domain.Member;
 import outBackend.cloudProject.domain.SkillTag;
 import outBackend.cloudProject.domain.mapping.MemberSkillTag;
 import outBackend.cloudProject.repository.MemberRepository;
+import outBackend.cloudProject.repository.MemberSkillTagRepository;
 import outBackend.cloudProject.repository.RefreshTokenRepository;
 import outBackend.cloudProject.repository.SkillTagRepository;
 import outBackend.cloudProject.security.RefreshToken;
@@ -23,8 +24,8 @@ import outBackend.cloudProject.dto.MemberRequestDTO;
 import outBackend.cloudProject.dto.TokenDto;
 import outBackend.cloudProject.dto.TokenRequestDTO;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,6 +38,7 @@ public class AuthService {
     private final TokenProvider tokenProvider;
     private final RefreshTokenRepository refreshTokenRepository;
     private final SkillTagRepository skillTagRepository;
+    private final MemberSkillTagRepository memberSkillTagRepository;
 
     @Transactional
     public Member signup(MemberRequestDTO.JoinDTO joinRequest) {
@@ -53,10 +55,11 @@ public class AuthService {
 
         List<MemberSkillTag> memberSkillTagList = MemberSkillTagConverter.toMemberSkillTagList(skillTagList);
 
-        memberSkillTagList.forEach(memberSkillTag -> {
+        for(MemberSkillTag memberSkillTag : memberSkillTagList) {
             memberSkillTag.setMember(member);
             memberSkillTag.setSkillTag(memberSkillTag.getSkillTag());
-        });
+            memberSkillTagRepository.save(memberSkillTag);
+        }
 
         return memberRepository.save(member);
     }
@@ -119,8 +122,58 @@ public class AuthService {
     public void deleteUser(String accessToken){
 
         Authentication authentication = tokenProvider.getAuthentication(accessToken);
-        System.out.println("name: " + authentication.getName());
-        Optional<Member> member = memberRepository.findByEmail(authentication.getName());
-        memberRepository.delete(member.get());
+        Member member = memberRepository.findByEmail(authentication.getName()).get();
+
+        List<MemberSkillTag> removeList = new ArrayList<>();
+
+        for(MemberSkillTag memberSkillTag : member.getMemberSkillTagList()){
+            removeList.add(memberSkillTag);
+            memberSkillTagRepository.delete(memberSkillTag);
+        }
+        member.getMemberSkillTagList().removeAll(removeList);
+
+        memberRepository.delete(member);
+    }
+
+    @Transactional
+    public Member updateUser(String accessToken, MemberRequestDTO.updateUserDTO updateRequest){
+
+        Authentication authentication = tokenProvider.getAuthentication(accessToken);
+        Member member = memberRepository.findByEmail(authentication.getName()).get();
+
+        if(updateRequest.getNickName().isPresent()){
+            member.setNickName(updateRequest.getNickName().get());
+        }
+
+        if(updateRequest.getIntro().isPresent()){
+            member.setIntro(updateRequest.getIntro().get());
+        }
+
+        if(updateRequest.getAbout().isPresent()){
+            member.setAbout(updateRequest.getAbout().get());
+        }
+
+        List<MemberSkillTag> removeList = new ArrayList<>();
+
+        for(MemberSkillTag memberSkillTag : member.getMemberSkillTagList()){
+            removeList.add(memberSkillTag);
+            memberSkillTagRepository.delete(memberSkillTag);
+        }
+        member.getMemberSkillTagList().removeAll(removeList);
+
+        List<SkillTag> skillTagList = updateRequest.getSkillTagList().stream()
+                .map(skillTag -> {
+                    return skillTagRepository.findByName(skillTag).orElseThrow(() -> new SkillTagHandler(ErrorStatus._SKILLTAG_NOT_FOUND));
+                }).collect(Collectors.toList());
+
+        List<MemberSkillTag> memberSkillTagList = MemberSkillTagConverter.toMemberSkillTagList(skillTagList);
+
+        for(MemberSkillTag memberSkillTag : memberSkillTagList) {
+            memberSkillTag.setMember(member);
+            memberSkillTag.setSkillTag(memberSkillTag.getSkillTag());
+            memberSkillTagRepository.save(memberSkillTag);
+        }
+
+        return member;
     }
 }

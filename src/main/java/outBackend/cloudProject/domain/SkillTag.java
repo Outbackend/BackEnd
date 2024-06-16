@@ -23,6 +23,6 @@ public class SkillTag {
     private Long id;
     private String name;
 
-    @OneToMany(mappedBy = "skillTag", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "skillTag")
     private List<MemberSkillTag> memberSkillTagList = new ArrayList<>();
 }
