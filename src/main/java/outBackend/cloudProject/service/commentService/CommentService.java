@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import outBackend.cloudProject.domain.Member;
 import outBackend.cloudProject.domain.Project;
 import outBackend.cloudProject.dto.CommentDto;
-import outBackend.cloudProject.entity.Comment;
+import outBackend.cloudProject.domain.Comment;
 import outBackend.cloudProject.repository.CommentRepository;
 import outBackend.cloudProject.repository.MemberRepository;
 

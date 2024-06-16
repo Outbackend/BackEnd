@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import outBackend.cloudProject.dto.CommentDto;
-import outBackend.cloudProject.entity.Comment;
+import outBackend.cloudProject.domain.Comment;
 import outBackend.cloudProject.service.commentService.CommentService;
 import java.util.List;
 import java.util.ResourceBundle;
