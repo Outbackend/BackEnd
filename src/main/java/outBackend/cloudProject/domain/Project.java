@@ -31,6 +31,8 @@ public class Project {
     @Column(name = "id", updatable = false)
     private Long id;
 
+    private Long createrId;
+
     @Column(name = "title", nullable = false)
     private String title;
 
