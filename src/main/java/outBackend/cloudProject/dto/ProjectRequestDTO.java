@@ -21,4 +21,13 @@ public class ProjectRequestDTO {
         List<String> skillTagList;
         List<String> positionList;
     }
+
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    @ToString
+    public static class addMemberToProjectDTO{
+        Long projectId;
+        Long memberId;  // 추가하려는 멤버의 id
+    }
 }

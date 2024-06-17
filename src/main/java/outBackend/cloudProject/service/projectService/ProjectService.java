@@ -6,6 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import outBackend.cloudProject.apiPayload.code.status.ErrorStatus;
 import outBackend.cloudProject.apiPayload.exception.handler.PositionHandler;
+import outBackend.cloudProject.apiPayload.exception.handler.ProjectHandler;
 import outBackend.cloudProject.apiPayload.exception.handler.SkillTagHandler;
 import outBackend.cloudProject.converter.MemberSkillTagConverter;
 import outBackend.cloudProject.converter.ProjectConverter;
@@ -85,13 +86,39 @@ public class ProjectService {
             projectPositionRepository.save(projectPosition);
         }
 
-        //  project, member, memberProject 연관 관계 맺기
+        //  project, member(creator), memberProject 연관 관계 맺기
         MemberProject memberProject = MemberProject.builder().build();
         memberProject.setMember(member);
         memberProject.setProject(project);
         memberProjectRepository.save(memberProject);
 
         return projectRepository.save(project);
+    }
+
+    @Transactional
+    public MemberProject addMember(String accessToken, ProjectRequestDTO.addMemberToProjectDTO request){
+
+        //  토큰 정보 기반으로 member 정보 가져오기
+        Authentication authentication = tokenProvider.getAuthentication(accessToken);
+        Member member = memberRepository.findByEmail(authentication.getName()).get();
+
+        Project project = projectRepository.findById(request.getProjectId()).get();
+
+        System.out.println("member id = " + member.getId());
+        System.out.println("creator id = " + project.getCreaterId());
+        //  프로젝트의 creator가 아닌 사람이 회원 추가 요청을 하면 에러 코드 발생
+        if(!(member.getId().equals(project.getCreaterId()))){
+            throw new ProjectHandler(ErrorStatus._FORBIDDEN);
+        }
+
+        Member newMember = memberRepository.findById(request.getMemberId()).get();
+
+        MemberProject memberProject = MemberProject.builder().build();
+        memberProject.setMember(newMember);
+        memberProject.setProject(project);
+        memberProjectRepository.save(memberProject);
+
+        return memberProject;
     }
 
 }

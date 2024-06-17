@@ -3,6 +3,7 @@ package outBackend.cloudProject.converter;
 import org.springframework.security.core.Authentication;
 import outBackend.cloudProject.domain.Member;
 import outBackend.cloudProject.domain.Project;
+import outBackend.cloudProject.domain.mapping.MemberProject;
 import outBackend.cloudProject.dto.MemberResponseDTO;
 import outBackend.cloudProject.dto.ProjectRequestDTO;
 import outBackend.cloudProject.dto.ProjectResponseDTO;
@@ -52,6 +53,16 @@ public class ProjectConverter {
                 .deadline(project.getDeadline())
                 .SkillTagList(skillTagList)
                 .PositionList(positionList)
+                .build();
+    }
+
+    public static ProjectResponseDTO.addMemberToProjectResultDTO toAddMemberResultDTO(MemberProject memberProject){
+
+        return ProjectResponseDTO.addMemberToProjectResultDTO.builder()
+                .title(memberProject.getProject().getTitle())
+                .projectId(memberProject.getProject().getId())
+                .memberName(memberProject.getMember().getNickName())
+                .memberId(memberProject.getMember().getId())
                 .build();
     }
 }
