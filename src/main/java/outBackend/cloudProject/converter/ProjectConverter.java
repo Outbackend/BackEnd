@@ -1,10 +1,10 @@
 package outBackend.cloudProject.converter;
 
-import org.springframework.security.core.Authentication;
+import outBackend.cloudProject.apiPayload.code.status.ErrorStatus;
 import outBackend.cloudProject.domain.Member;
 import outBackend.cloudProject.domain.Project;
+import outBackend.cloudProject.domain.enums.ProjectStatus;
 import outBackend.cloudProject.domain.mapping.MemberProject;
-import outBackend.cloudProject.dto.MemberResponseDTO;
 import outBackend.cloudProject.dto.ProjectRequestDTO;
 import outBackend.cloudProject.dto.ProjectResponseDTO;
 
@@ -63,6 +63,36 @@ public class ProjectConverter {
                 .projectId(memberProject.getProject().getId())
                 .memberName(memberProject.getMember().getNickName())
                 .memberId(memberProject.getMember().getId())
+                .build();
+    }
+
+    public static ProjectResponseDTO.updateProjectResultDTO toUpdateProjectResultDTO(Project project){
+
+        List<String> skillTagList = project.getProjectSkillTagList().stream()
+                .map(projectSkillTag -> {
+                    return projectSkillTag.getSkillTag().getName();
+                }).collect(Collectors.toList());
+
+        List<String> positionList = project.getProjectPositionList().stream()
+                .map(projectPosition -> {
+                    return projectPosition.getPosition().getName();
+                }).collect(Collectors.toList());
+
+        String projectStatus;
+        if(project.getProjectStatus().equals(ProjectStatus.RECRUITING))
+            projectStatus = "RECRUITING";
+        else if(project.getProjectStatus().equals(ProjectStatus.IN_PROGRESS))
+            projectStatus = "IN_PROGRESS";
+        else
+            projectStatus = "COMPLETED";
+
+        return ProjectResponseDTO.updateProjectResultDTO.builder()
+                .title(project.getTitle())
+                .content(project.getContent())
+                .deadline(project.getDeadline())
+                .skillTagList(skillTagList)
+                .positionList(positionList)
+                .projectStatus(projectStatus)
                 .build();
     }
 }

@@ -43,4 +43,18 @@ public class ProjectResponseDTO {
         String memberName;
         Long memberId;
     }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class updateProjectResultDTO{
+        String title;
+        String content;
+        LocalDate deadline;
+        String projectStatus;
+
+        List<String> skillTagList;
+        List<String> positionList;
+    }
 }

@@ -7,6 +7,7 @@ import lombok.ToString;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public class ProjectRequestDTO {
 
@@ -29,5 +30,19 @@ public class ProjectRequestDTO {
     public static class addMemberToProjectDTO{
         Long projectId;
         Long memberId;  // 추가하려는 멤버의 id
+    }
+
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    @ToString
+    public static class updateProjectDTO{
+        Optional<String> title;
+        Optional<String> content;
+        Optional<LocalDate> deadline;
+        Optional<String> projectStatus;
+
+        List<String> skillTagList;
+        List<String> positionList;
     }
 }

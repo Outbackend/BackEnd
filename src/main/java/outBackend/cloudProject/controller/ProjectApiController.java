@@ -49,4 +49,13 @@ public class ProjectApiController {
         projectService.deleteProject(accessToken, project_id);
         return ApiResponse.onSuccess("Successfully deleted project");
     }
+
+    @PatchMapping("/projects/{project_id}")
+    public ApiResponse<ProjectResponseDTO.updateProjectResultDTO> updateProject(@RequestHeader("accessToken") String accessToken,
+                                                                                @PathVariable Long project_id,
+                                                                                @RequestBody ProjectRequestDTO.updateProjectDTO request){
+
+        Project project = projectService.updateProject(accessToken, project_id, request);
+        return ApiResponse.onSuccess(ProjectConverter.toUpdateProjectResultDTO(project));
+    }
 }
