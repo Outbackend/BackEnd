@@ -31,6 +31,14 @@ public class ProjectService {
     private final PositionRepository positionRepository;
     private final ProjectSkillTagRepository projectSkillTagRepository;
     private final ProjectPositionRepository projectPositionRepository;
+
+
+    @Transactional
+    public Project projectInfo(Long projectId) {
+        Project project = projectRepository.findById(projectId).orElse(null);
+        return project;
+    }
+
     @Transactional
     public Project save(ProjectRequestDTO.SaveDTO saveRequest){
 

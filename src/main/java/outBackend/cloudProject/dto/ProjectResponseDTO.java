@@ -19,4 +19,16 @@ public class ProjectResponseDTO {
         String content;
         LocalDate deadline;
     }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ProjectPageDTO {
+        String title;
+        String content;
+        LocalDate deadline;
+        List<String> SkillTagList;
+        List<String> PositionList;
+    }
 }
