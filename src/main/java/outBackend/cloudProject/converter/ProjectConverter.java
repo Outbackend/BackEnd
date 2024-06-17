@@ -13,6 +13,7 @@ public class ProjectConverter {
                 .content(request.getContent())
                 .deadline(request.getDeadline())
                 .projectSkillTagList(new ArrayList<>())
+                .projectPositionList(new ArrayList<>())
                 .build();
     }
 

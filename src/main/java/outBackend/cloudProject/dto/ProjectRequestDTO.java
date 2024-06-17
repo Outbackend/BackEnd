@@ -19,5 +19,6 @@ public class ProjectRequestDTO {
         String content;
         LocalDate deadline;
         List<String> skillTagList;
+        List<String> positionList;
     }
 }

@@ -18,6 +18,5 @@ public class ProjectResponseDTO {
         String title;
         String content;
         LocalDate deadline;
-        List<String> skillTagList;
     }
 }

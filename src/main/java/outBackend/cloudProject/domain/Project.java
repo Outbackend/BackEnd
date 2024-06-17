@@ -3,7 +3,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.stereotype.Service;
 import outBackend.cloudProject.domain.mapping.MemberSkillTag;
+import outBackend.cloudProject.domain.mapping.ProjectPosition;
 import outBackend.cloudProject.domain.mapping.ProjectSkillTag;
 
 import java.time.LocalDate;
@@ -14,9 +16,10 @@ import java.util.Set;
 
 @Entity
 @Getter
+@Setter
 @DynamicUpdate
 @DynamicInsert
-@Builder
+@Builder(toBuilder = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class Project {
@@ -35,9 +38,11 @@ public class Project {
     @Column(name = "deadline")
     private LocalDate deadline;
 
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "project")
     private List<ProjectSkillTag> projectSkillTagList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "project")
+    private List<ProjectPosition> projectPositionList = new ArrayList<>();
 
 }
 

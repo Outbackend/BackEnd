@@ -4,9 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-import outBackend.cloudProject.domain.mapping.MemberSkillTag;
 import outBackend.cloudProject.domain.mapping.ProjectPosition;
-import outBackend.cloudProject.domain.mapping.ProjectSkillTag;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,5 +23,5 @@ public class Position {
     private String name;
 
     @OneToMany(mappedBy = "position")
-    private List<ProjectPosition> projectPosition = new ArrayList<>();
+    private List<ProjectPosition> projectPositionList = new ArrayList<>();
 }

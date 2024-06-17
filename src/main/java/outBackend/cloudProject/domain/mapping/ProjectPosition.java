@@ -35,9 +35,9 @@ public class ProjectPosition {
 
     public void setPosition(Position position) {
         if(this.position != null){
-            this.position.getProjectPosition().remove(this);
+            this.position.getProjectPositionList().remove(this);
         }
         this.position = position;
-        position.getProjectPosition().add(this);
+        position.getProjectPositionList().add(this);
     }
 }
