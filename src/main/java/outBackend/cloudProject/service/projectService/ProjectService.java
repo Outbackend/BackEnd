@@ -25,6 +25,7 @@ import outBackend.cloudProject.dto.ProjectResponseDTO;
 import outBackend.cloudProject.repository.*;
 import outBackend.cloudProject.security.TokenProvider;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -104,8 +105,6 @@ public class ProjectService {
 
         Project project = projectRepository.findById(request.getProjectId()).get();
 
-        System.out.println("member id = " + member.getId());
-        System.out.println("creator id = " + project.getCreaterId());
         //  프로젝트의 creator가 아닌 사람이 회원 추가 요청을 하면 에러 코드 발생
         if(!(member.getId().equals(project.getCreaterId()))){
             throw new ProjectHandler(ErrorStatus._FORBIDDEN);
@@ -121,4 +120,52 @@ public class ProjectService {
         return memberProject;
     }
 
+    @Transactional
+    public void deleteProject(String accessToken, Long projectId){
+
+        //  토큰 정보 기반으로 member 정보 가져오기
+        Authentication authentication = tokenProvider.getAuthentication(accessToken);
+        Member member = memberRepository.findByEmail(authentication.getName()).get();
+
+        Project project = projectRepository.findById(projectId).get();
+
+        //  프로젝트의 creator가 아닌 사람이 회원 추가 요청을 하면 에러 코드 발생
+        if(!(member.getId().equals(project.getCreaterId()))){
+            throw new ProjectHandler(ErrorStatus._FORBIDDEN);
+        }
+
+        //  -----------
+
+        List<MemberProject> memberRemoveList = new ArrayList<>();
+
+        for(MemberProject memberProject : project.getMemberProjectList()){
+            memberRemoveList.add(memberProject);
+            memberProjectRepository.delete(memberProject);
+        }
+        project.getMemberProjectList().removeAll(memberRemoveList);
+
+        //  -----------
+
+        List<ProjectPosition> positionRemoveList = new ArrayList<>();
+
+        for(ProjectPosition projectPosition : project.getProjectPositionList()){
+            positionRemoveList.add(projectPosition);
+            projectPositionRepository.delete(projectPosition);
+        }
+        project.getProjectPositionList().removeAll(positionRemoveList);
+
+        //  -----------
+
+        List<ProjectSkillTag> skillTagRemoveList = new ArrayList<>();
+
+        for(ProjectSkillTag projectSkillTag : project.getProjectSkillTagList()){
+            skillTagRemoveList.add(projectSkillTag);
+            projectSkillTagRepository.delete(projectSkillTag);
+        }
+        project.getProjectSkillTagList().removeAll(skillTagRemoveList);
+
+        //  -----------
+
+        projectRepository.delete(project);
+    }
 }
