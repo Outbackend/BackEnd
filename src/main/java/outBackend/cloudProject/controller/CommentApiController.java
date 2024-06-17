@@ -1,26 +1,35 @@
 package outBackend.cloudProject.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
-import outBackend.cloudProject.dto.CommentDto;
+import org.springframework.web.bind.annotation.*;
+import outBackend.cloudProject.apiPayload.ApiResponse;
+import outBackend.cloudProject.domain.Comment;
+import outBackend.cloudProject.dto.CommentRequestDTO;
+import outBackend.cloudProject.dto.CommentResponseDTO;
 import outBackend.cloudProject.service.commentService.CommentService;
-
-import java.util.List;
+import outBackend.cloudProject.converter.CommentConverter;
 
 @RestController
 public class CommentApiController {
     @Autowired
     private CommentService commentService;
 
-    @GetMapping("/api/project/{projectId}/comment")
-    public ResponseEntity<List<CommentDto>> comments(@PathVariable Long projectId) {
-        List<CommentDto> dtos = commentService.comments(projectId);
-        return ResponseEntity.status(HttpStatus.OK).body(dtos);
+    @PostMapping("/api/projects/{projectId}/comment")
+    public ApiResponse<CommentResponseDTO.SaveResultDTO> addComment(@RequestHeader("accessToken")String accessToken, @RequestBody CommentRequestDTO.SaveDTO request) {
+        Comment comment = commentService.save(accessToken, request);
+        return ApiResponse.onSuccess(CommentConverter.toaddResultDTO(comment));
     }
+
+
+
+
+
+//
+//    @GetMapping("/api/project/{projectId}/comment")
+//    public ResponseEntity<List<CommentDto>> comments(@PathVariable Long projectId) {
+//        List<CommentDto> dtos = commentService.comments(projectId);
+//        return ResponseEntity.status(HttpStatus.OK).body(dtos);
+//    }
 
     // commit test
 //    @PostMapping("/api/project/{projectId}/comment")

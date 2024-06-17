@@ -1,23 +1,34 @@
 package outBackend.cloudProject.service.commentService;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import outBackend.cloudProject.dto.CommentDto;
+import outBackend.cloudProject.domain.Comment;
+import outBackend.cloudProject.domain.Member;
+import outBackend.cloudProject.dto.CommentRequestDTO;
 import outBackend.cloudProject.repository.CommentRepository;
 import outBackend.cloudProject.repository.MemberRepository;
+import outBackend.cloudProject.converter.CommentConverter;
+import outBackend.cloudProject.security.TokenProvider;
 
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class CommentService {
-    @Autowired
-    private CommentRepository commentRepository;
-//    //프로젝트 레파지토리 생성시 의존성 주입
-//    @Autowired
-//    private ProjectRepository projectRepository;
-    @Autowired
-    private MemberRepository memberRepository;
+    private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final CommentRepository commentRepository;
+    private final MemberRepository memberRepository;
+    private final TokenProvider tokenProvider;
+
+    public Comment save(String accessToken, CommentRequestDTO.SaveDTO request) {
+        Authentication authentication = tokenProvider.getAuthentication(accessToken);
+        Member member = memberRepository.findByEmail(authentication.getName()).get();
+
+        Comment comment = CommentConverter.toComment(request);
+        return commentRepository.save(comment);
+    }
 
 //    @Transactional
 //    public CommentDto update(Long id, CommentDto dto) {
@@ -40,10 +51,4 @@ public class CommentService {
 //    }
 
 
-    public List<CommentDto> comments(Long projectId) {
-        return commentRepository.findByMemberId(projectId)
-                .stream()
-                .map(comment -> CommentDto.createCommentDto(comment))
-                .collect(Collectors.toList());
-    }
 }

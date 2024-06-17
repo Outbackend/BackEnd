@@ -1,17 +1,16 @@
-package outBackend.cloudProject.entity;
+package outBackend.cloudProject.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-import outBackend.cloudProject.domain.Member;
-import outBackend.cloudProject.domain.Project;
-import outBackend.cloudProject.dto.CommentDto;
+import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
 @Getter
 @ToString
+@DynamicUpdate
+@DynamicInsert
+@Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
 public class Comment {
@@ -19,13 +18,14 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @ManyToOne
-//    @JoinColumn(name="member_id")
-//    private Project project;
-
     @ManyToOne
     @JoinColumn(name="member_id")
     private Member member;
+
+    @ManyToOne
+    @JoinColumn(name="project_id")
+    private Project project;
+
     @Column
     private String body;
 
