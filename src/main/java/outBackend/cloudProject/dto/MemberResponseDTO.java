@@ -38,7 +38,8 @@ public class MemberResponseDTO {
         String nickName;
         String intro;
         String about;
-        List<String> SkillTagList;
+        List<String> skillTagList;
+        List<String> projectList;
     }
 
     @Getter

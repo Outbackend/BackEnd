@@ -1,5 +1,7 @@
 package outBackend.cloudProject.converter;
 
+import org.springframework.security.core.Authentication;
+import outBackend.cloudProject.domain.Member;
 import outBackend.cloudProject.domain.Project;
 import outBackend.cloudProject.dto.MemberResponseDTO;
 import outBackend.cloudProject.dto.ProjectRequestDTO;
@@ -10,18 +12,22 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ProjectConverter {
-    public static Project toproject(ProjectRequestDTO.SaveDTO request) {
+    public static Project toproject(Member member, ProjectRequestDTO.SaveDTO request) {
+
         return Project.builder()
+                .createrId(member.getId())
                 .title(request.getTitle())
                 .content(request.getContent())
                 .deadline(request.getDeadline())
                 .projectSkillTagList(new ArrayList<>())
                 .projectPositionList(new ArrayList<>())
+                .memberProjectList(new ArrayList<>())
                 .build();
     }
 
     public static ProjectResponseDTO.SaveResultDTO toaddResultDTO(Project project) {
         return ProjectResponseDTO.SaveResultDTO.builder()
+                .createrId(project.getCreaterId())
                 .title(project.getTitle())
                 .content(project.getContent())
                 .deadline(project.getDeadline())

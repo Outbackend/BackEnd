@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.stereotype.Service;
+import outBackend.cloudProject.domain.enums.ProjectStatus;
 import outBackend.cloudProject.domain.mapping.MemberProject;
 import outBackend.cloudProject.domain.mapping.MemberSkillTag;
 import outBackend.cloudProject.domain.mapping.ProjectPosition;
@@ -30,6 +31,8 @@ public class Project {
     @Column(name = "id", updatable = false)
     private Long id;
 
+    private Long createrId;
+
     @Column(name = "title", nullable = false)
     private String title;
 
@@ -39,13 +42,16 @@ public class Project {
     @Column(name = "deadline")
     private LocalDate deadline;
 
+    @Enumerated(EnumType.STRING)
+    private ProjectStatus projectStatus;
+
     @OneToMany(mappedBy = "project")
     private List<ProjectSkillTag> projectSkillTagList = new ArrayList<>();
 
     @OneToMany(mappedBy = "project")
     private List<ProjectPosition> projectPositionList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "project_id")
+    @OneToMany(mappedBy = "project")
     private List<MemberProject> memberProjectList = new ArrayList<>();
 }
 

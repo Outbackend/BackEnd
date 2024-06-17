@@ -15,6 +15,7 @@ public class ProjectResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class SaveResultDTO {
+        Long createrId;
         String title;
         String content;
         LocalDate deadline;

@@ -32,12 +32,18 @@ public class MemberConverter {
                     return memberSkillTag.getSkillTag().getName();
                 }).collect(Collectors.toList());
 
+        List<String> projectList = member.getMemberProjectList().stream()
+                .map(memberProject -> {
+                    return memberProject.getProject().getTitle();
+                }).collect(Collectors.toList());
+
         return MemberResponseDTO.UserPageDTO.builder()
                 .id(member.getId())
                 .nickName(member.getNickName())
                 .intro(member.getIntro())
                 .about(member.getAbout())
-                .SkillTagList(skillTagList)
+                .skillTagList(skillTagList)
+                .projectList(projectList)
                 .build();
     }
 

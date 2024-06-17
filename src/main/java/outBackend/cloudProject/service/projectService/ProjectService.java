@@ -2,6 +2,7 @@ package outBackend.cloudProject.service.projectService;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import outBackend.cloudProject.apiPayload.code.status.ErrorStatus;
 import outBackend.cloudProject.apiPayload.exception.handler.PositionHandler;
@@ -10,15 +11,18 @@ import outBackend.cloudProject.converter.MemberSkillTagConverter;
 import outBackend.cloudProject.converter.ProjectConverter;
 import outBackend.cloudProject.converter.ProjectPositionConverter;
 import outBackend.cloudProject.converter.ProjectSkillTagConverter;
+import outBackend.cloudProject.domain.Member;
 import outBackend.cloudProject.domain.Position;
 import outBackend.cloudProject.domain.Project;
 import outBackend.cloudProject.domain.SkillTag;
+import outBackend.cloudProject.domain.mapping.MemberProject;
 import outBackend.cloudProject.domain.mapping.MemberSkillTag;
 import outBackend.cloudProject.domain.mapping.ProjectPosition;
 import outBackend.cloudProject.domain.mapping.ProjectSkillTag;
 import outBackend.cloudProject.dto.ProjectRequestDTO;
 import outBackend.cloudProject.dto.ProjectResponseDTO;
 import outBackend.cloudProject.repository.*;
+import outBackend.cloudProject.security.TokenProvider;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,6 +35,10 @@ public class ProjectService {
     private final PositionRepository positionRepository;
     private final ProjectSkillTagRepository projectSkillTagRepository;
     private final ProjectPositionRepository projectPositionRepository;
+    private final MemberRepository memberRepository;
+    private final MemberProjectRepository memberProjectRepository;
+
+    private final TokenProvider tokenProvider;
 
 
     @Transactional
@@ -40,34 +48,49 @@ public class ProjectService {
     }
 
     @Transactional
-    public Project save(ProjectRequestDTO.SaveDTO saveRequest){
+    public Project save(String accessToken, ProjectRequestDTO.SaveDTO saveRequest){
 
-        Project project = ProjectConverter.toproject(saveRequest);
+        //  토큰 정보 기반으로 member 정보 가져오기
+        Authentication authentication = tokenProvider.getAuthentication(accessToken);
+        Member member = memberRepository.findByEmail(authentication.getName()).get();
+
+        // 프로젝트 생성 request dto와 member 정보 이용해서 project 객체 생성
+        Project project = ProjectConverter.toproject(member, saveRequest);
 
         List<SkillTag> skillTagList = saveRequest.getSkillTagList().stream()
                 .map(skillTag -> {
                     return skillTagRepository.findByName(skillTag).orElseThrow(() -> new SkillTagHandler(ErrorStatus._SKILLTAG_NOT_FOUND));
                 }).collect(Collectors.toList());
+
         List<ProjectSkillTag> projectSkillTagList = ProjectSkillTagConverter.toProjectSkillTagList(skillTagList);
 
+        //  projectSkillTag, project, skillTag 연관 관계 맺기
         for(ProjectSkillTag projectSkillTag : projectSkillTagList) {
             projectSkillTag.setProject(project);
             projectSkillTag.setSkillTag(projectSkillTag.getSkillTag());
             projectSkillTagRepository.save(projectSkillTag);
         }
-        projectRepository.save(project);
 
         List<Position> positionList = saveRequest.getPositionList().stream()
                 .map(position -> {
                     return positionRepository.findByName(position).orElseThrow(() -> new PositionHandler(ErrorStatus._POSITION_NOT_FOUND));
                 }).collect(Collectors.toList());
+
         List<ProjectPosition> projectPositionList = ProjectPositionConverter.toProjectPositionList(positionList);
 
+        //  projectPosition, project, position 연관 관계 맺기
         for(ProjectPosition projectPosition : projectPositionList) {
             projectPosition.setProject(project);
             projectPosition.setPosition(projectPosition.getPosition());
             projectPositionRepository.save(projectPosition);
         }
+
+        //  project, member, memberProject 연관 관계 맺기
+        MemberProject memberProject = MemberProject.builder().build();
+        memberProject.setMember(member);
+        memberProject.setProject(project);
+        memberProjectRepository.save(memberProject);
+
         return projectRepository.save(project);
     }
 
