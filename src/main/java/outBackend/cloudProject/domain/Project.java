@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.stereotype.Service;
+import outBackend.cloudProject.domain.mapping.MemberProject;
 import outBackend.cloudProject.domain.mapping.MemberSkillTag;
 import outBackend.cloudProject.domain.mapping.ProjectPosition;
 import outBackend.cloudProject.domain.mapping.ProjectSkillTag;
@@ -44,6 +45,8 @@ public class Project {
     @OneToMany(mappedBy = "project")
     private List<ProjectPosition> projectPositionList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "project_id")
+    private List<MemberProject> memberProjectList = new ArrayList<>();
 }
 
 

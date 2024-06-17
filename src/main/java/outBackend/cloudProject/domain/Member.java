@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import outBackend.cloudProject.domain.enums.Authority;
+import outBackend.cloudProject.domain.mapping.MemberProject;
 import outBackend.cloudProject.domain.mapping.MemberSkillTag;
 
 import java.util.ArrayList;
@@ -43,5 +44,6 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<MemberSkillTag> memberSkillTagList = new ArrayList<>();
 
-
+    @OneToMany(mappedBy = "member")
+    private List<MemberProject> memberProjectList = new ArrayList<>();
 }
