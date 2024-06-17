@@ -32,4 +32,15 @@ public class ProjectResponseDTO {
         List<String> SkillTagList;
         List<String> PositionList;
     }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class addMemberToProjectResultDTO{
+        String title;
+        Long projectId;
+        String memberName;
+        Long memberId;
+    }
 }

@@ -9,7 +9,7 @@ public class CommentResponseDTO {
     @Getter
     @Builder
     @ToString
-    public class SaveResultDTO {
+    public static class SaveResultDTO {
         Long id;
         Long member_id;
         Long project_id;

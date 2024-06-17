@@ -1,48 +1,46 @@
 package outBackend.cloudProject.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import outBackend.cloudProject.apiPayload.ApiResponse;
 import outBackend.cloudProject.domain.Comment;
+import outBackend.cloudProject.dto.CommentDTO;
 import outBackend.cloudProject.dto.CommentRequestDTO;
 import outBackend.cloudProject.dto.CommentResponseDTO;
 import outBackend.cloudProject.service.commentService.CommentService;
-import outBackend.cloudProject.converter.CommentConverter;
+
+import java.util.List;
 
 @RestController
 public class CommentApiController {
     @Autowired
     private CommentService commentService;
 
-    @PostMapping("/api/projects/{projectId}/comment")
-    public ApiResponse<CommentResponseDTO.SaveResultDTO> addComment(@RequestHeader("accessToken")String accessToken, @RequestBody CommentRequestDTO.SaveDTO request) {
-        Comment comment = commentService.save(accessToken, request);
-        return ApiResponse.onSuccess(CommentConverter.toaddResultDTO(comment));
+    @GetMapping("/api/projects/{projectId}/comments")
+    public ResponseEntity<List<CommentDTO>> comments(@PathVariable Long projectId) {
+        List<CommentDTO> dtos = commentService.comments(projectId);
+        return ResponseEntity.status(HttpStatus.OK).body(dtos);
     }
 
+    @PostMapping("/api/projects/{projectId}/comments/{memberId}")
+    public ResponseEntity<CommentDTO> create(@PathVariable Long projectId, @PathVariable Long memberId,
+                                             @RequestBody CommentDTO dto) {
+        CommentDTO createdDto = commentService.create(projectId, memberId, dto);
+        return ResponseEntity.status(HttpStatus.OK).body(createdDto);
+    }
 
+    @PatchMapping("/api/comment/{id}/{memberId}")
+    public ResponseEntity<CommentDTO> update(@PathVariable Long id, @PathVariable Long memberId,
+                                             @RequestBody CommentDTO dto) {
+        CommentDTO updateDto = commentService.update(id, memberId,dto);
+        return ResponseEntity.status(HttpStatus.OK).body(updateDto);
+    }
 
-
-
-//
-//    @GetMapping("/api/project/{projectId}/comment")
-//    public ResponseEntity<List<CommentDto>> comments(@PathVariable Long projectId) {
-//        List<CommentDto> dtos = commentService.comments(projectId);
-//        return ResponseEntity.status(HttpStatus.OK).body(dtos);
-//    }
-
-    // commit test
-//    @PostMapping("/api/project/{projectId}/comment")
-//    public ResponseEntity<CommentDto> create(@PathVariable Long projectId,
-//                                             @RequestBody CommentDto dto) {
-//        CommentDto createdDto = commentService.create(projectId, dto);
-//        return ResponseEntity.status(HttpStatus.OK).body(createdDto);
-//    }
-//
-//    @PatchMapping("/api/comment/{id}")
-//    public ResponseEntity<CommentDto> update(@PathVariable Long id,
-//                                             @RequestBody CommentDto dto) {
-//        CommentDto updateDto = commentService.update(id, dto);
-//        return ResponseEntity.status(HttpStatus.OK).body(updateDto);
-//    }
+    @DeleteMapping("/api/comments/{id}/{memberId}")
+    public ResponseEntity<CommentDTO> delete(@PathVariable Long id, @PathVariable Long memberId) {
+        CommentDTO deletedDTO = commentService.delete(id, memberId);
+        return ResponseEntity.status(HttpStatus.OK).body(deletedDTO);
+    }
 }
