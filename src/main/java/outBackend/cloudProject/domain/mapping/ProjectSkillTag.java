@@ -16,10 +16,12 @@ public class ProjectSkillTag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // cascade
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id")
     private Project project;
 
+    // cascade
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "skillTag_id")
     private SkillTag skillTag;

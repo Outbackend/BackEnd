@@ -41,4 +41,12 @@ public class ProjectApiController {
         MemberProject memberProject = projectService.addMember(accessToken, request);
         return ApiResponse.onSuccess(ProjectConverter.toAddMemberResultDTO(memberProject));
     }
+
+    @DeleteMapping("/projects/{project_id}")
+    public ApiResponse<String> deleteProject(@RequestHeader("accessToken") String accessToken,
+                                             @PathVariable Long project_id){
+
+        projectService.deleteProject(accessToken, project_id);
+        return ApiResponse.onSuccess("Successfully deleted project");
+    }
 }
