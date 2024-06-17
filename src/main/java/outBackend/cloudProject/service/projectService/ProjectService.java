@@ -259,4 +259,36 @@ public class ProjectService {
 
         return project;
     }
+
+    @Transactional
+    public void removeMember(String accessToken, ProjectRequestDTO.deleteMemberFromProjectDTO request){
+
+        //  토큰 정보 기반으로 member 정보 가져오기
+        Authentication authentication = tokenProvider.getAuthentication(accessToken);
+        Member member = memberRepository.findByEmail(authentication.getName()).get();
+
+        Project project = projectRepository.findById(request.getProjectId()).get();
+
+        //  프로젝트의 creator가 아닌 사람이 멤버 제거 요청을 하면 에러 코드 발생
+        if(!(member.getId().equals(project.getCreaterId()))){
+            throw new ProjectHandler(ErrorStatus._FORBIDDEN);
+        }
+
+        Member deleteMember = memberRepository.findById(request.getMemberId()).get();
+
+        MemberProject remove = null;
+
+        for(MemberProject memberProject : project.getMemberProjectList()){
+            if(memberProject.getMember().getId().equals(deleteMember.getId())){
+
+//                deleteMember.getMemberProjectList().remove(memberProject);
+//                project.getMemberProjectList().remove(memberProject);
+                remove = memberProject;
+                memberProjectRepository.delete(memberProject);
+            }
+        }
+
+        project.getMemberProjectList().remove(remove);
+
+    }
 }

@@ -45,4 +45,13 @@ public class ProjectRequestDTO {
         List<String> skillTagList;
         List<String> positionList;
     }
+
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    @ToString
+    public static class deleteMemberFromProjectDTO{
+        Long projectId;
+        Long memberId;  // 삭제하려는 멤버의 id
+    }
 }

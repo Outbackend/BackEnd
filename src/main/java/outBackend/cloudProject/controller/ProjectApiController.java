@@ -58,4 +58,12 @@ public class ProjectApiController {
         Project project = projectService.updateProject(accessToken, project_id, request);
         return ApiResponse.onSuccess(ProjectConverter.toUpdateProjectResultDTO(project));
     }
+
+    @PatchMapping("/projects/members")
+    public ApiResponse<String> deleteMemberFromProject(@RequestHeader("accessToken") String accessToken,
+                                                       @RequestBody ProjectRequestDTO.deleteMemberFromProjectDTO request){
+
+        projectService.removeMember(accessToken, request);
+        return ApiResponse.onSuccess("Successfully deleted member from project");
+    }
 }
