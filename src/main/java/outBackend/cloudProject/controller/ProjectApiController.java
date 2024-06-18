@@ -12,6 +12,8 @@ import outBackend.cloudProject.dto.ProjectResponseDTO;
 import outBackend.cloudProject.repository.ProjectRepository;
 import outBackend.cloudProject.service.projectService.ProjectService;
 
+import java.util.List;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -66,4 +68,12 @@ public class ProjectApiController {
         projectService.removeMember(accessToken, request);
         return ApiResponse.onSuccess("Successfully deleted member from project");
     }
+
+    @GetMapping("/projects")
+    public ApiResponse<List<ProjectResponseDTO.showALLProjectResultDTO>> projectPage(){
+
+        List<Project> projectList = projectService.projectInfoList();
+        return ApiResponse.onSuccess(ProjectConverter.toshowALLProjectResultDTO(projectList));
+    }
+
 }

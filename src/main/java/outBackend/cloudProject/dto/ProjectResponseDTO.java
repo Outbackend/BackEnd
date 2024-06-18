@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import outBackend.cloudProject.domain.enums.ProjectStatus;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -19,6 +20,7 @@ public class ProjectResponseDTO {
         String title;
         String content;
         LocalDate deadline;
+        ProjectStatus projectStatus;
     }
 
     @Getter
@@ -56,5 +58,15 @@ public class ProjectResponseDTO {
 
         List<String> skillTagList;
         List<String> positionList;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class showALLProjectResultDTO {
+        String title;
+        LocalDate deadline;
+        ProjectStatus projectStatus;
     }
 }

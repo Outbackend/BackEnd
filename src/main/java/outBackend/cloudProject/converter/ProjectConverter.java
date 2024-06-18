@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static outBackend.cloudProject.domain.enums.ProjectStatus.RECRUITING;
+
 public class ProjectConverter {
     public static Project toproject(Member member, ProjectRequestDTO.SaveDTO request) {
 
@@ -32,6 +34,7 @@ public class ProjectConverter {
                 .title(project.getTitle())
                 .content(project.getContent())
                 .deadline(project.getDeadline())
+                .projectStatus(project.getProjectStatus())
                 .build();
     }
 
@@ -79,7 +82,7 @@ public class ProjectConverter {
                 }).collect(Collectors.toList());
 
         String projectStatus;
-        if(project.getProjectStatus().equals(ProjectStatus.RECRUITING))
+        if(project.getProjectStatus().equals(RECRUITING))
             projectStatus = "RECRUITING";
         else if(project.getProjectStatus().equals(ProjectStatus.IN_PROGRESS))
             projectStatus = "IN_PROGRESS";
@@ -94,5 +97,15 @@ public class ProjectConverter {
                 .positionList(positionList)
                 .projectStatus(projectStatus)
                 .build();
+    }
+
+    public static List<ProjectResponseDTO.showALLProjectResultDTO> toshowALLProjectResultDTO(List<Project> projectList) {
+        return projectList.stream()
+                .map(project -> ProjectResponseDTO.showALLProjectResultDTO.builder()
+                        .title(project.getTitle())
+                        .deadline(project.getDeadline())
+                        .projectStatus(project.getProjectStatus())
+                        .build())
+                .collect(Collectors.toList());
     }
 }

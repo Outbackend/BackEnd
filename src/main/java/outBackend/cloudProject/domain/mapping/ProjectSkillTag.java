@@ -17,12 +17,12 @@ public class ProjectSkillTag {
     private Long id;
 
     // cascade
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,cascade =CascadeType.ALL)
     @JoinColumn(name = "project_id")
     private Project project;
 
     // cascade
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade =CascadeType.ALL)
     @JoinColumn(name = "skillTag_id")
     private SkillTag skillTag;
 

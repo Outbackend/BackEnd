@@ -27,6 +27,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static outBackend.cloudProject.domain.enums.ProjectStatus.RECRUITING;
+
 @Service
 @RequiredArgsConstructor
 public class ProjectService {
@@ -91,6 +93,7 @@ public class ProjectService {
         memberProject.setProject(project);
         memberProjectRepository.save(memberProject);
 
+        project.setProjectStatus(RECRUITING);
         return projectRepository.save(project);
     }
 
@@ -196,7 +199,7 @@ public class ProjectService {
         if(updateRequest.getProjectStatus().isPresent()){
             switch (updateRequest.getProjectStatus().get()){
                 case "RECRUITING":
-                    project.setProjectStatus(ProjectStatus.RECRUITING);
+                    project.setProjectStatus(RECRUITING);
                     break;
                 case "IN_PROGRESS":
                     project.setProjectStatus(ProjectStatus.IN_PROGRESS);
@@ -290,5 +293,11 @@ public class ProjectService {
 
         project.getMemberProjectList().remove(remove);
 
+    }
+
+    @Transactional
+    public List<Project> projectInfoList() {
+        List<Project> projectList = projectRepository.findAll();
+        return projectList;
     }
 }
